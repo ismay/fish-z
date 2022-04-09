@@ -11,16 +11,6 @@ function z -d "Jump to a recent directory."
         printf "         -x --delete   Removes the current directory from $Z_DATA\n"
         printf "         -h --help     Print this help\n\n"
     end
-    function __z_legacy_escape_regex
-        # taken from escape_string_pcre2 in fish
-        # used to provide compatibility with fish 2
-        for c in (string split '' $argv)
-            if contains $c (string split '' '.^$*+()?[{}\\|-]')
-                printf \\
-            end
-            printf '%s' $c
-        end
-    end
 
     set -l options h/help c/clean e/echo l/list p/purge r/rank t/recent d/directory x/delete
 
@@ -122,11 +112,8 @@ function z -d "Jump to a recent directory."
     set -l qs
     for arg in $argv
         set -l escaped $arg
-        if string escape --style=regex '' >/dev/null 2>&1 # use builtin escape if available
-            set escaped (string escape --style=regex $escaped)
-        else
-            set escaped (__z_legacy_escape_regex $escaped)
-        end
+        set escaped (string escape --style=regex $escaped)
+
         # Need to escape twice, see https://www.math.utah.edu/docs/info/gawk_5.html#SEC32
         set escaped (string replace --all \\ \\\\ $escaped)
         set qs $qs $escaped
@@ -157,12 +144,6 @@ function z -d "Jump to a recent directory."
         if test -n "$ZO_METHOD"
             type -q "$ZO_METHOD"; and "$ZO_METHOD" "$target"; and return $status
             echo "Cannot open with ZO_METHOD set to $ZO_METHOD"; and return 1
-        else if test "$OS" = Windows_NT
-            # Be careful, in msys2, explorer always return 1
-            type -q explorer; and explorer "$target"
-            return 0
-            echo "Cannot open file explorer"
-            return 1
         else
             type -q xdg-open; and xdg-open "$target"; and return $status
             type -q open; and open "$target"; and return $status
