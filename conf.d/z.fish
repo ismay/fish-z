@@ -21,12 +21,12 @@ else if contains $HOME $Z_EXCLUDE
     set Z_EXCLUDE (string replace -r -- "^$HOME\$" '^'$HOME'$$' $Z_EXCLUDE)
 end
 
-function __z_on_variable_pwd --on-variable PWD
-    __z_add
+function _z_on_variable_pwd --on-variable PWD
+    _z_add
 end
 
-function __z_uninstall --on-event z_uninstall
-    functions -e __z_on_variable_pwd
+function _z_uninstall --on-event z_uninstall
+    functions -e _z_on_variable_pwd
 
     if test ! -z "$Z_DATA"
         printf "To completely erase z's data, remove:\n" >/dev/stderr

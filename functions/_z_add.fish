@@ -1,4 +1,4 @@
-function __z_add -d "Add PATH to .z file"
+function _z_add -d "Add PATH to .z file"
     test -n "$fish_private_mode"; and return 0
 
     for i in $Z_EXCLUDE

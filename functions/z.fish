@@ -1,5 +1,5 @@
 function z -d "Jump to a recent directory."
-    function __print_help -d "Print z help."
+    function _print_help -d "Print z help."
         printf "Usage: z  [-celrth] string1 string2...\n\n"
         printf "         -c --clean    Removes directories that no longer exist from $Z_DATA\n"
         printf "         -d --dir      Opens matching directory using system file manager.\n"
@@ -17,10 +17,10 @@ function z -d "Jump to a recent directory."
     argparse $options -- $argv
 
     if set -q _flag_help
-        __print_help
+        _print_help
         return 0
     else if set -q _flag_clean
-        __z_clean
+        _z_clean
         printf "%s cleaned!\n" $Z_DATA
         return 0
     else if set -q _flag_purge

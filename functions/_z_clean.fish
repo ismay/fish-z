@@ -1,4 +1,4 @@
-function __z_clean -d "Clean up .z file to remove paths no longer valid"
+function _z_clean -d "Clean up .z file to remove paths no longer valid"
     set -l tmpfile (mktemp $Z_DATA.XXXXXX)
 
     if test -f $tmpfile
